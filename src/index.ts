@@ -27,8 +27,14 @@ bot.command('quit', async ctx => {
 });
 
 bot.on(message('text'), async ctx => {
-  const result = await model.generateContent(ctx.message.text);
-  await ctx.reply(result.response.text());
+  model
+    .generateContent(ctx.message.text)
+    .then(async result => {
+      await ctx.reply(result.response.text());
+    })
+    .catch(async error => {
+      await ctx.reply(error.message);
+    });
 });
 
 bot.launch();
